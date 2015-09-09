@@ -8,14 +8,15 @@ namespace App\DAO;
  */
 class User
 {
-    protected $id;
-    function __construct($id)
+
+
+    function get($id)
     {
-        $this->id = $id;
+        return model('User')->get($id);
     }
 
-    function get()
+    static function all()
     {
-        return model('User')->get($this->id);
+        return model('User')->all();
     }
 }

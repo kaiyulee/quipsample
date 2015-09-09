@@ -2,7 +2,7 @@
 define('DEBUG', 'on');
 //必须设置此目录,PHP程序的根目录
 define('WEBPATH', __DIR__);
-define('WEBROOT', 'http://local.framework.com');
+define('WEBROOT', 'http://learn-swl.me');
 
 //包含框架入口文件
 require __DIR__ . '/libs/lib_config.php';
@@ -11,4 +11,5 @@ if (get_cfg_var('env.name') == 'dev')
 {
     Swoole::$php->config->setPath(WEBPATH . '/apps/configs/dev/');
 }
+Swoole::$php->session->start();
 Swoole::$php->runMVC();

@@ -24,7 +24,7 @@ class Db extends Swoole\Controller
         /**
          * other
          */
-        $tables = $this->db("huya")->query("show tables")->fetchall();
+        $tables = $this->db("slave")->query("select * from user")->fetchall();
         var_dump($tables);
     }
 
@@ -63,7 +63,8 @@ class Db extends Swoole\Controller
         $gets['level'] = 5;
 
         //仅获取数据
-        var_dump($model->gets($gets));
+        //var_dump($model->gets($gets));
+        var_dump($_GET);
 
         //分页
         $gets['page'] = empty($_GET['page'])?1:intval($_GET['page']);
