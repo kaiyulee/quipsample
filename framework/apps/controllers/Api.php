@@ -22,7 +22,6 @@ class Api extends Swoole\Controller
         
         if (!empty($auth)) return App\User::auth($auth);
     }
-    
 }
 
 
