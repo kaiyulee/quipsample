@@ -1,5 +1,6 @@
 <?php
 namespace App;
+use Swoole;
 
 class User
 {
@@ -21,6 +22,8 @@ class User
         unset($user['password']);
         
         $_SESSION['user'] = $user;
+
+        var_dump($_SESSION);
 
         return ['code' => 0, 'data'=>$user];
 
