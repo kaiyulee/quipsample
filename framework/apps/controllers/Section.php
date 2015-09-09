@@ -21,10 +21,9 @@ class Section extends Swoole\Controller
     public function add()
     {
         $doc_id = $_REQUEST['doc_id'];
-        $section_name = $_REQUEST['section_name'];
         $content = $_REQUEST['content'];
 
-        if (empty($doc_id) or empty($section_name) or empty($content)) {
+        if (empty($doc_id) or empty($content)) {
             return ['code' => 5, 'data' => '', 'msg' => 'param error'];
         }
 
@@ -76,7 +75,6 @@ class Section extends Swoole\Controller
 
     public function update()
     {
-        //TODO 判断当前状态，有锁则不能编辑
         // 重命名
         $user = $_SESSION['user'];
 
@@ -86,9 +84,21 @@ class Section extends Swoole\Controller
 
         $content = $_REQUEST['content'];
         $section_id = $_REQUEST['section_id'];
+        //TODO 判断当前状态，有锁则不能编辑
+        $is_locked = self::check_status($section_id);
+
+        if ($is_locked) {
+            return ['code' => 1024, 'data' => '', 'msg' => 'section locked'];
+        }
+
+        // 如果没锁，先加个锁
+        self::add_lock($section_id);
+
+        //Swoole::$php->http->finish();
 
         $row = [
             'content' => $content,
+            'lock' => 0,
             'update_time' => time()
         ];
 
@@ -147,6 +157,22 @@ class Section extends Swoole\Controller
         $docs = $this->db->query($sql)->fetchall();
 
         return ['code' => 0, 'data' => $docs];
+    }
+
+    public static function check_status($section_id)
+    {
+        $locked = false;
+
+        $res = Swoole::getInstance()->db->query('SELECT `lock` FROM `section` WHERE `id` = ' . $section_id)->fetch();
+
+        $locked = empty($res['lock']) ? false : true;
+
+        return $locked;
+    }
+
+    private static function add_lock($section_id)
+    {
+        Swoole::getInstance()->db->query('UPDATE `section` SET `lock` = 1 WHERE `id` = ' . $section_id);
     }
 
 }
