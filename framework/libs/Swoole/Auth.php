@@ -19,8 +19,8 @@ class Auth
     public $errCode;
     public $errMessage;
 
-    static $login_url = '/login.php?';
-    static $username = 'username';
+    static $login_url = '/user/login?';
+    static $username = 'email';
     static $password = 'password';
     static $userid = 'id';
 
@@ -28,7 +28,7 @@ class Auth
     static $lastip = 'lastip';
     static $session_prefix = '';
     static $mk_password = 'username,password';
-    static $password_hash = 'sha1';
+    static $password_hash = 'md5';
     static $cookie_life = 2592000;
     static $session_destroy = false;
 
