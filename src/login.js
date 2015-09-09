@@ -1,10 +1,24 @@
 var React = require('react');
 var Ajax = require('ajax');
+var Cookies = require('cookies-js');
+
 var Login = React.createClass({
     handleClick: function(event) {
         var userName = React.findDOMNode(this.refs.userName).value;
         var passWord = React.findDOMNode(this.refs.passWord).value;
-        console.log("userName:" + userName, " passWord:" + passWord);
+
+        function isLogin(callback) {
+            Ajax.post('data.json', {username: userName, password: passWord}, function(data) {
+                if (true) {
+                    Cookies.set('login', 'login');
+                    Cookies.set('user', '1');
+                    callback();
+                } else {
+                    alert('密码错误');
+                }
+            });
+        }
+        isLogin(this.props.isLogin);
     },
     render: function() {
         return (
