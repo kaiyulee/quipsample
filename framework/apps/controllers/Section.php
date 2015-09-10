@@ -84,7 +84,7 @@ class Section extends Swoole\Controller
 
         $content = $_REQUEST['content'];
         $section_id = $_REQUEST['section_id'];
-        //TODO 判断当前状态，有锁则不能编辑
+        //判断当前状态，有锁则不能编辑
         $is_locked = self::check_status($section_id);
 
         if ($is_locked) {
@@ -114,14 +114,14 @@ class Section extends Swoole\Controller
     }
 
     /**
-     * 获取指定文件夹下的文档
+     * 获取指定文档内容
      * @return array
      */
     public function sec()
     {
-        $dir_id = $_REQUEST['dir_id'];
+        $doc_id = $_REQUEST['doc_id'];
 
-        if (empty($dir_id)) {
+        if (empty($doc_id)) {
             return ['code' => 5, 'data' => '', 'msg' => 'param error'];
         }
 
@@ -131,38 +131,17 @@ class Section extends Swoole\Controller
             return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
         }
 
-        $sql = 'SELECT * FROM document AS doc ';
-        $sql .= 'LEFT JOIN directory AS dir ON dir.id = doc.dirid ';
-        $sql .= 'WHERE doc.uid = ' . $user['id'];
-        $sql .= ' AND dir.id = ' . $dir_id . ' ORDER BY doc.update_time DESC';
+        $sql = 'SELECT document.`docname` AS title,`content` FROM `section` ';
+        $sql .= 'LEFT JOIN `document` ON document.id = section.docid ';
+        $sql .= 'WHERE section.uid = ' . $user['id'] . ' AND docid = ' . $doc_id;
 
-        $docs = $this->db->query($sql)->fetchall();
-
-        return ['code' => 0, 'data' => $docs];
-    }
-
-    public function all()
-    {
-        $user = $_SESSION['user'];
-
-        if (empty($user)) {
-            return ['code' => 5, 'data' => '', 'msg' => 'who are you!'];
-        }
-
-        $sql = 'SELECT * FROM document AS doc ';
-        $sql .= 'LEFT JOIN directory AS dir ON dir.id = doc.dirid ';
-        $sql .= 'WHERE doc.uid = ' . $user['id'];
-        $sql .= ' ORDER BY doc.update_time DESC';
-
-        $docs = $this->db->query($sql)->fetchall();
+        $docs = $this->db->query($sql)->fetch();
 
         return ['code' => 0, 'data' => $docs];
     }
 
     public static function check_status($section_id)
     {
-        $locked = false;
-
         $res = Swoole::getInstance()->db->query('SELECT `lock` FROM `section` WHERE `id` = ' . $section_id)->fetch();
 
         $locked = empty($res['lock']) ? false : true;

@@ -16,10 +16,8 @@ class Api extends Swoole\Controller
 
     public function user()
     {
-        //$id         = empty($_REQUEST['id']) ? '' : $_REQUEST['id'];
-        $id         = empty($_POST['id']) ? '' : $_POST['id'];
-        $auth       = empty($_POST['auth']) ? '' : $_POST['auth'];
-        
+        $auth       = empty($_REQUEST['auth']) ? '' : $_REQUEST['auth'];
+
         if (!empty($auth)) return App\User::auth($auth);
     }
 }
