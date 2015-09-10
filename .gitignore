@@ -1,5 +1,5 @@
 node_modules
-*.png
-*.jpg
-*.jpeg
-*.js
+www/*.png
+www/*.jpg
+www/*.jpeg
+www/*.js
