@@ -29,10 +29,6 @@ var App = React.createClass({
             this.setState({isLogin: true});
         }
     },
-    dirList: function() {
-        Ajax.get('data.json', {}, function(data){return data});
-        return function(){return 'a'};
-    },
     dirDelete: function () {
 
     },
@@ -46,8 +42,6 @@ var App = React.createClass({
         if(!this.state.isLogin) {
             return ( <Login isLogin = {this.isLogin.bind(this)} /> )
         } else {
-            var a = this.props.dirList;
-            console.log(a);
             return (
                 <Dir
                   dirDelte = {this.dirDelete.bind(this)}
