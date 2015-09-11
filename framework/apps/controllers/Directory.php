@@ -18,21 +18,23 @@ class Directory extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $files = [];
         // 分两步查询
         // 1, root 下的文件夹
-        $sql = "SELECT * FROM `directory` WHERE uid={$user['id']} AND pid = {$user['root_dir_id']}";
-        $files['dirs'] = $this->db->query($sql)->fetchall();
+        //$sql = "SELECT * FROM `directory` WHERE uid={$user['id']} AND pid = {$user['root_dir_id']}";
+        //$sql = "SELECT * FROM `directory` WHERE pid = 0";
+        //$files['dirs'] = $this->db->query($sql)->fetchall();
 
         // 2, root 下的文档
-        $sql = "SELECT * FROM `document` WHERE uid={$user['id']} AND dirid = {$user['root_dir_id']}";
+        //$sql = "SELECT * FROM `document` WHERE uid={$user['id']} AND dirid = {$user['root_dir_id']}";
+        $sql = "SELECT * FROM `document` WHERE dirid = 0";
 
         $files['docs'] = $this->db->query($sql)->fetchall();
 
-        return ['code' => 0, 'data' => $files];
+        return ['code' => 0, 'data' => $files, 'msg' => 'success'];
     }
 
     /**
@@ -51,7 +53,7 @@ class Directory extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $files = [];
@@ -81,7 +83,7 @@ class Directory extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $row    = [
@@ -113,7 +115,7 @@ class Directory extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $where = 'uid = ' . $user['id'];
@@ -134,7 +136,7 @@ class Directory extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $name = $_REQUEST['new_name'];
