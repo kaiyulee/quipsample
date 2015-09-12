@@ -1,0 +1,154 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+body,
+dl,
+dd,
+ul {
+    margin: 0;
+}
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+body {
+    margin: 0;
+    background: url(images/bg.jpg) repeat top left;
+}
+/* ************************************************************************** **
+ * login
+** ************************************************************************** */
+.login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    margin: -5rem 0 0 -10rem;
+    width: 20rem;
+}
+.login h1 {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    line-height: 1;
+}
+.login input {
+    width: 100%;
+    height: 3rem;
+    margin: 0 0 1rem;
+    border: 0;
+    border-radius: .25rem;
+    text-indent: 3rem;
+    font-size: 1rem;
+    color: white;
+    outline: none;
+}
+.login input:focus {
+    color: yellow;
+}
+.login input:nth-child(2) {
+    background: rgba(255, 255, 255, 0.2) url(images/username.png) no-repeat 0.5rem 0.5rem;
+}
+.login input:nth-child(2):focus {
+    background: rgba(255, 255, 255, 0.4) url(images/username.png) no-repeat 0.5rem 0.5rem;
+}
+.login input:nth-child(3) {
+    background: rgba(255, 255, 255, 0.2) url(images/password.png) no-repeat 0.5rem 0.5rem;
+}
+.login input:nth-child(3):focus {
+    background: rgba(255, 255, 255, 0.4) url(images/password.png) no-repeat 0.5rem 0.5rem;
+}
+.login .enter {
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: .25rem;
+    font-size: 1rem;
+    color: white;
+    color: green;
+    font-weight: bold;
+    line-height: 3rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* ************************************************************************** **
+ * dir
+** ************************************************************************** */
+.dir {
+}
+.item {
+    position: relative;
+    width: 13.5rem;
+    height: 15.25rem;
+    padding: 5rem 1rem 1rem;
+    float: left;
+    background: url(images/dir.png) no-repeat top left;
+    background-size: 100% 100%;
+}
+.item h2 {
+    text-align: center;
+}
+.item span {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+    width: 7rem;
+    height: 1.5rem;
+    font-size: 1rem;
+    color: rgba(255, 255, 0, .7);
+    background: rgba(0, 0, 0, .5);
+    border-radius: .3rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+}
+.quip {
+    padding-top: 4rem;
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 0, .3);
+}
+.header span {
+    padding: 0 .5rem;
+    margin: .5rem;
+    float:left;
+    color: rgba(255, 255, 255, 1);
+    line-height: 2rem;
+    background: rgba(0, 255, 0, .3);
+    border-radius: .25rem;
+}
+.header dl {
+    float: right;
+    padding: .5rem 2rem .5rem 0;
+}
+.header dt,
+.header dd {
+    float: left;
+    color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+}
+.header dt {
+    width: 2rem;
+    height: 2rem;
+    background: rgba(0, 255, 0, 1);
+    overflow: hidden;
+}
+.header dt img {
+    width: 100%;
+    height: 100%;
+}
+.header dd {
+    margin: 0 0 0 1rem;
+    line-height: 2rem;
+    padding: 0 .25rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 1);
+}
