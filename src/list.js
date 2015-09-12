@@ -21,6 +21,7 @@ var List = React.createClass({
                 <header className = "header">
                     <span>返回</span>
                     <span>添加</span>
+                    <span>Moji聊天</span>
                     <dl>
                         <dt>头像</dt>
                         <dd>名字</dd>

@@ -1,20 +1,29 @@
 var React = require('react');
-var Ajax = require('ajax');
+var Request = require('ajax-request');
 var Cookies = require('cookies-js');
 
 var Login = React.createClass({
     handleClick: function(event) {
         var userName = React.findDOMNode(this.refs.userName).value;
         var passWord = React.findDOMNode(this.refs.passWord).value;
+
         function isLogin(callback) {
-            Ajax.get('login.json', {username: userName, password: passWord}, function(data) {
-                var data = eval(data);
-                if (data.true == true) {
+            Request({
+                url : '/api/user',
+                method : 'POST', 
+                data : {username:userName, password:passWord}
+            },
+            function(err, res, body) {
+                var body =  eval('(' + body + ')');
+                console.log(body);
+
+                if (body.code == 0) {
                     Cookies.set('login', 'login');
-                    Cookies.set('user', '1');
+                    Cookies.set('uid', body.data.uid);
+                    Cookies.set('user', body.data);
                     callback();
                 } else {
-                    alert('密码错误');
+                    alert('账号或密码错误');
                 }
             });
         }

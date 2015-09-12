@@ -88,17 +88,21 @@ class Parser
 
     function parseBody($request)
     {
-        $cd = strstr($request->head['Content-Type'], 'boundary');
-        if (isset($request->head['Content-Type']) and $cd !== false)
+        var_dump($request);
+        $cd = strstr($request->head['content-type'], 'boundary');
+        if (isset($request->head['content-type']) and $cd !== false)
         {
             $this->parseFormData($request, $cd);
         }
         else
         {
-            if (substr($request->head['Content-Type'], 0, 33) == 'application/x-www-form-urlencoded')
-            {
-                parse_str($request->body, $request->post);
-            }
+            //if (substr($request->head['content-Type'], 0, 33) == 'application/x-www-form-urlencoded')
+            //{
+                //parse_str($request->body, $request->post);
+                $request->post = json_decode($request->body, true);
+                var_dump($request->post);
+
+            //}
         }
     }
     /**

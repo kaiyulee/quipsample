@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "ajax": "0.0.4",
+    "ajax-request": "^1.2.1",
     "babel": "^5.8.23",
     "babel-core": "^5.8.24",
     "babel-loader": "^5.3.2",

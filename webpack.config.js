@@ -2,8 +2,8 @@ var webpack = require('webpack');
 module.exports = {
     entry: {
         app: [
-            'webpack-dev-server/client?http://127.0.0.1:7777',
-            'webpack/hot/only-dev-server',
+    //        'webpack-dev-server/client?http://127.0.0.1:7777',
+    //        'webpack/hot/only-dev-server',
             './src/entry.js'
         ]
         /*,
@@ -28,6 +28,12 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.js', '.jsx', '.woff', '.png', '.jpg']
+    },
+    node: {
+        console: true,
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
