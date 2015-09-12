@@ -7,22 +7,24 @@ var Item = React.createClass({
         React.findDOMNode(this.refs.deleteBtn).style.display = "none";
     },
     handlerDelete(){
-        this.props.deleteTodo(this.props.index);
     },
     render: function() {
-        var dataJson = eval(this.props.data);
-        var list = dataJson.map(function(data) {
-            return (
-                <li className = "item" data-id = {data.id} data-pid = {data.dirid} >
-                    <h2>{data.name}</h2>
-                </li>
-            );
-        });
         return (
-            <ul className = "list">
-                  {list}
-            </ul>
+            <li className = "item"
+                onMouseOver = {this.handlerMouseOver.bind(this)}
+                onMouseOut  = {this.handlerMouseOut.bind(this)}
+            >
+                <h2 contentEditable="true">{this.props.name}</h2>
+                <span
+                    ref = "deleteBtn"
+                    onClick = {this.handlerDelete.bind(this)}
+                    style = {{'display': 'none'}}
+                    data-id = {this.props.id}
+                    data-dirid = {this.props.dirid}
+                >delete</span>
+            </li>
         );
     }
 });
 module.exports = Item;
+

@@ -6,10 +6,10 @@ var Login = React.createClass({
     handleClick: function(event) {
         var userName = React.findDOMNode(this.refs.userName).value;
         var passWord = React.findDOMNode(this.refs.passWord).value;
-
         function isLogin(callback) {
-            Ajax.post('data.json', {username: userName, password: passWord}, function(data) {
-                if (true) {
+            Ajax.get('login.json', {username: userName, password: passWord}, function(data) {
+                var data = eval(data);
+                if (data.true == true) {
                     Cookies.set('login', 'login');
                     Cookies.set('user', '1');
                     callback();
