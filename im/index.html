@@ -1,0 +1,72 @@
+<html lang="en"><head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>IM | QUIP</title>
+ 
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/assets/css/style.css" rel="stylesheet">
+ 
+        <script src="/assets/js/jquery.js"></script>
+        <script src="/assets/js/jquery.json.js"></script>
+        <script src="/assets/js/config.js"></script>
+        <script src="/assets/js/chat.js"></script>
+    </head>
+ 
+    <body class="tooltips">
+        
+        <div class="wrapper">
+
+            <!-- BEGIN PAGE CONTENT -->
+            <div class="page-content">
+                
+                <div class="container-fluid">
+                    <ul class="timeline">
+                        
+                        <!-- BEGIN ITEM TIMELINE -->
+                        <li class="item-timeline">
+                            <div class="inner-content">
+                                <!-- BEGIN FOOTER TIMELINE -->
+                                <div class="footer-timeline">
+                                    <ul class="timeline-option" id="chat-messages" style="height:400px;overflow-y:scroll;">
+                                    </ul>
+                                </div><!-- /.footer-timeline -->
+                                <div class="footer-timeline">
+                                    <ul class="timeline-option">
+                                       
+                                        <li class="option-row" id="post-template">
+                                            <img src="http://tp2.sinaimg.cn/1658423893/50/5668673952/1" class="avatar" alt="Avatar">
+                                            <div class="reply">
+                                                <form role="form">
+                                                <input type="text" class="form-control input-sm" id="msg-content" placeholder="Write your message...">
+                                                </form>
+                                            </div><!-- /.reply -->
+                                        </li>
+
+                                    </ul>
+                                </div><!-- /.footer-timeline -->
+
+                                <!-- END FOOTER TIMELINE -->
+                            </div><!-- /.inner-content -->
+                        </li>
+                        <!-- END ITEM TIMELINE -->
+                    </ul>   
+
+                    <!-- END TIMELINE -->
+                </div><!-- /.container-fluid -->
+                
+            </div><!-- /.page-content -->
+        </div><!-- /.wrapper -->
+
+        <!-- END PAGE CONTENT -->
+        <div id="msg-template" style="display:none;">
+        <li class="option-row">
+            <img src="http://tp2.sinaimg.cn/1658423893/50/5668673952/1" class="avatar" alt="Avatar">
+            <div class="reply">
+                <p class="content"></p>
+                <p class="text-muted reply-time msg-time"></p>
+            </div><!-- /.reply -->
+        </li>
+        </div>
+
+</body>
+</html>
