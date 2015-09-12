@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Kron
+ * @author R.K <a href="mailto:qiang.zou@moji.com">qiang.zou@moji.com</a>
  * @since 15/9/9 15:44
  */
 
@@ -30,7 +30,7 @@ class Section extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $row = [
@@ -51,24 +51,54 @@ class Section extends Swoole\Controller
         }
     }
 
-    public function del()
+    public function force_del()
     {
         $section_id = $_REQUEST['section_id'];
 
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
-        $where = 'uid = ' . $user['id'] . ' AND lock = 0';
+        // 正处于锁状态的不能删
+        //$where = 'uid = ' . $user['id'] . ' AND lock = 0';
+        $where = 'lock = 0';
 
         $res = $this->model->del($section_id, $where);
 
         if (false === $res) {
-            return ['code' => 1, 'data' => 'false'];
+            return ['code' => 1, 'data' => '', 'msg' => 'fail'];
         } else {
-            return ['code' => 0, 'data' => 'true'];
+            return ['code' => 0, 'data' => '', 'msg' => 'success'];
+        }
+
+    }
+
+    public function soft_del()
+    {
+        $section_id = $_REQUEST['section_id'];
+
+        $user = $_SESSION['user'];
+
+        if (empty($user)) {
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
+        }
+
+        // 正处于锁状态的不能删
+        //$where = 'uid = ' . $user['id'] . ' AND lock = 0';
+        $where = 'lock = 0';
+
+        $row = [
+            'status' => 1
+        ];
+
+        $res = $this->model->set($section_id, $row, $where);
+
+        if (false === $res) {
+            return ['code' => 1, 'data' => '', 'msg' => 'fail'];
+        } else {
+            return ['code' => 0, 'data' => '', 'msg' => 'success'];
         }
 
     }
@@ -84,7 +114,7 @@ class Section extends Swoole\Controller
 
         $content = $_REQUEST['content'];
         $section_id = $_REQUEST['section_id'];
-        //TODO 判断当前状态，有锁则不能编辑
+        //判断当前状态，有锁则不能编辑
         $is_locked = self::check_status($section_id);
 
         if ($is_locked) {
@@ -92,7 +122,7 @@ class Section extends Swoole\Controller
         }
 
         // 如果没锁，先加个锁
-        self::add_lock($section_id);
+        self::lock($section_id);
 
         //Swoole::$php->http->finish();
 
@@ -102,67 +132,45 @@ class Section extends Swoole\Controller
             'update_time' => time()
         ];
 
-        $where = 'uid = ' . $user['id'];
+        //$where = 'uid = ' . $user['id'];
+        $where = '';
 
         $res = $this->model->set($section_id, $row, $where);
 
         if (false === $res) {
-            return ['code' => 1, 'data' => 'false'];
+            return ['code' => 1, 'data' => '', 'msg' => 'fail'];
         } else {
-            return ['code' => 0, 'data' => 'true'];
+            return ['code' => 0, 'data' => $content, 'msg' => 'success'];
         }
     }
 
     /**
-     * 获取指定文件夹下的文档
+     * 获取指定文档段落内容
      * @return array
      */
-    public function sec()
+    public function show()
     {
-        $dir_id = $_REQUEST['dir_id'];
+        $section_id = $_REQUEST['section_id'];
 
-        if (empty($dir_id)) {
+        if (empty($section_id)) {
             return ['code' => 5, 'data' => '', 'msg' => 'param error'];
         }
 
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
-        $sql = 'SELECT * FROM document AS doc ';
-        $sql .= 'LEFT JOIN directory AS dir ON dir.id = doc.dirid ';
-        $sql .= 'WHERE doc.uid = ' . $user['id'];
-        $sql .= ' AND dir.id = ' . $dir_id . ' ORDER BY doc.update_time DESC';
+        $sql = 'SELECT `content` FROM `section` WHERE id = ' . $section_id;
 
-        $docs = $this->db->query($sql)->fetchall();
+        $sec = $this->db->query($sql)->fetch();
 
-        return ['code' => 0, 'data' => $docs];
-    }
-
-    public function all()
-    {
-        $user = $_SESSION['user'];
-
-        if (empty($user)) {
-            return ['code' => 5, 'data' => '', 'msg' => 'who are you!'];
-        }
-
-        $sql = 'SELECT * FROM document AS doc ';
-        $sql .= 'LEFT JOIN directory AS dir ON dir.id = doc.dirid ';
-        $sql .= 'WHERE doc.uid = ' . $user['id'];
-        $sql .= ' ORDER BY doc.update_time DESC';
-
-        $docs = $this->db->query($sql)->fetchall();
-
-        return ['code' => 0, 'data' => $docs];
+        return ['code' => 0, 'data' => $sec, 'msg' => 'success'];
     }
 
     public static function check_status($section_id)
     {
-        $locked = false;
-
         $res = Swoole::getInstance()->db->query('SELECT `lock` FROM `section` WHERE `id` = ' . $section_id)->fetch();
 
         $locked = empty($res['lock']) ? false : true;
@@ -170,9 +178,14 @@ class Section extends Swoole\Controller
         return $locked;
     }
 
-    private static function add_lock($section_id)
+    private static function lock($section_id)
     {
         Swoole::getInstance()->db->query('UPDATE `section` SET `lock` = 1 WHERE `id` = ' . $section_id);
+    }
+
+    private static function unlock($section_id)
+    {
+        Swoole::getInstance()->db->query('UPDATE `section` SET `lock` = 0 WHERE `id` = ' . $section_id);
     }
 
 }

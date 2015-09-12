@@ -23,8 +23,6 @@ class User
         
         $_SESSION['user'] = $user;
 
-        var_dump($_SESSION);
-
         return ['code' => 0, 'data'=>$user];
 
     }
