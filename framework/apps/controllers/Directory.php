@@ -13,45 +13,77 @@ class Directory extends Swoole\Controller
         $this->model = model('Directory');
     }
 
-    public function all()
+    public function desktop()
     {
+        $user = $_SESSION['user'];
+
+        if (empty($user)) {
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
+        }
+
+        $files = [];
+        // 分两步查询
+        // 1, root 下的文件夹
+        //$sql = "SELECT * FROM `directory` WHERE uid={$user['id']} AND pid = {$user['root_dir_id']}";
+        //$sql = "SELECT * FROM `directory` WHERE pid = 0";
+        //$files['dirs'] = $this->db->query($sql)->fetchall();
+
+        // 2, root 下的文档
+        //$sql = "SELECT * FROM `document` WHERE uid={$user['id']} AND dirid = {$user['root_dir_id']}";
+        $sql = "SELECT * FROM `document` WHERE dirid = 0";
+
+        $files['docs'] = $this->db->query($sql)->fetchall();
+
+        return ['code' => 0, 'data' => $files, 'msg' => 'success'];
+    }
+
+    /**
+     * both folders and docs under a specific folder
+     * @return array
+     */
+    public function files()
+    {
+        $pid = $_REQUEST['dir_id'];
+
+        if (empty($pid)) {
+            return ['code' => 5, 'data' => '', 'msg' => 'param error'];
+        }
+
         // 获取用户所有文件夹
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
-        $dirs = $this->db->query("SELECT * FROM directory WHERE uid = {$user['id']}")->fetchall();
+        $files = [];
+        // 分两步查询
+        // 1, root 下的文件夹
+        $sql = "SELECT * FROM `directory` WHERE uid={$user['id']} AND pid = {$pid}";
+        $files['dirs'] = $this->db->query($sql)->fetchall();
 
-        //var_dump($dirs);
-        //
-        //Swoole::$php->http->finish();
-        $resort = [];
+        // 2, root 下的文档
+        $sql = "SELECT * FROM `document` WHERE uid={$user['id']} AND dirid = {$pid}";
 
-        if (!empty($dirs)) {
-            foreach ($dirs as $key => $val) {
-                $id = $val['id'];
-                $resort[$id] = [];
-            }
+        $files['docs'] = $this->db->query($sql)->fetchall();
 
-            foreach ($dirs as $dir) {
-                $resort[$dir['pid']][] = $dir;
-            }
-        }
-
-        return ['code' => 0, 'data' => $resort];
+        return ['code' => 0, 'data' => $files];
     }
 
     public function add()
     {
         // 创建文件夹
-        $pid = $_POST['pid'];
-        $name = $_POST['name'];
+        $pid = $_REQUEST['pid'];
+        $name = $_REQUEST['name'];
+
+        if (empty($pid) or empty($name)) {
+            return ['code' => 5, 'data' => '', 'msg' => 'param error'];
+        }
+
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $row    = [
@@ -76,10 +108,14 @@ class Directory extends Swoole\Controller
         // 删除文件夹
         $dir_id = $_REQUEST['dir_id'];
 
+        if (empty($dir_id)) {
+            return ['code' => 5, 'data' => '', 'msg' => 'param error'];
+        }
+
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $where = 'uid = ' . $user['id'];
@@ -100,11 +136,15 @@ class Directory extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
-        $name = $_POST['new_name'];
-        $dir_id = $_POST['dir_id'];
+        $name = $_REQUEST['new_name'];
+        $dir_id = $_REQUEST['dir_id'];
+
+        if (empty($dir_id) or empty($name)) {
+            return ['code' => 5, 'data' => '', 'msg' => 'param error'];
+        }
 
         $row = [
             'foldername' => $name,
@@ -121,4 +161,6 @@ class Directory extends Swoole\Controller
             return ['code' => 0, 'data' => 'true'];
         }
     }
+
+
 }
