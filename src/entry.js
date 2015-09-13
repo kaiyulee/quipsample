@@ -1,26 +1,43 @@
 var React = require('react');
-var Cookies = require('cookies-js');
+var Cookie = require('cookies-js');
 var Ajax = require('ajax');
 var Login = require('./login');
 var List  = require('./list');
+var Note  = require('./note');
+
 var App = React.createClass({
+
     getInitialState: function() {
         return {
-            isLogin: Cookies.get('login') == 'login' ? true : false
+            isLogin: Cookie.get('login') == 'login' ? true : false,
+            user : {}
         }
     },
+
     isLogin: function() {
-        console.log('a');
-        var isLogin = Cookies.get('login') === 'login' ? true : false;
+        var isLogin = Cookie.get('login') === 'login' ? true : false;
         if(isLogin) {
             this.setState({isLogin: true});
         }
     },
+
     render: function() {
         if(!this.state.isLogin) {
-            return (<Login isLogin = {this.isLogin.bind(this)} />)
+            return (
+                <div>
+                    <Login isLogin = {this.isLogin.bind(this)} />
+                </div>
+            )
         } else {
-            return (<List data = {this.state.data} />)
+            var user = {
+                uid : Cookie.get('uid'),
+                username : Cookie.get('username'),
+                avatar : Cookie.get('avatar')
+            };
+            return (
+                <List data = {user} />
+            )
+            //return (<Note />)
         }
     }
 });

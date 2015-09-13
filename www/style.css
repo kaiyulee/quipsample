@@ -5,10 +5,14 @@ body {
     box-sizing: border-box;
 }
 body,
+p,
 dl,
 dd,
 ul {
     margin: 0;
+}
+textarea {
+    padding: 0;
 }
 ul {
     padding: 0;
@@ -151,4 +155,26 @@ body {
     line-height: 2rem;
     padding: 0 .25rem;
     border-bottom: 1px dashed rgba(255, 255, 255, 1);
+}
+
+/* ************************************************************************** **
+ * Note
+** ************************************************************************** */
+#note {
+    margin: 0 .5rem;
+    background: rgba(255, 255, 255, .5);
+    padding: 1rem;
+    border-radius: .5rem;
+    outline: none;
+}
+#note section {
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, .1);
+    outline: none;
+}
+#note section:last-child {
+    font-size: 0;
+    height: 0;
+    padding: 0;
+    border: 0 none;
 }

@@ -2,15 +2,22 @@ var webpack = require('webpack');
 module.exports = {
     entry: {
         app: [
+<<<<<<< HEAD
             './src/entry.js'
         ]
 
         /*,
+=======
+    //        'webpack-dev-server/client?http://127.0.0.1:7777',
+    //        'webpack/hot/only-dev-server',
+            './src/entry.js'
+        ],
+>>>>>>> 100dos/master
         dom: [
-            'webpack-dev-server/client?http://127.0.0.1:7777',
-            'webpack/hot/only-dev-server',
-            './js/dom.js'
-        ]*/
+     //       'webpack-dev-server/client?http://127.0.0.1:7777',
+     //       'webpack/hot/only-dev-server',
+            './src/dom.js'
+        ]
     },
     output: {
         path: __dirname + '/www',
@@ -27,6 +34,12 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.js', '.jsx', '.woff', '.png', '.jpg']
+    },
+    node: {
+        console: true,
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
