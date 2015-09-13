@@ -15,6 +15,8 @@ class Document extends Swoole\Controller
     {
         parent::__construct($swoole);
 
+        $this->session->start();
+
         $this->model = model('Document');
     }
 
@@ -137,9 +139,9 @@ class Document extends Swoole\Controller
         $res = $this->model->set($doc_id, $row, $where);
 
         if (false === $res) {
-            return ['code' => 1, 'data' => 'false'];
+            return ['code' => 1, 'data' => '', 'msg' => 'fail'];
         } else {
-            return ['code' => 0, 'data' => 'true'];
+            return ['code' => 0, 'data' => $name, 'msg' => 'success'];
         }
     }
 
@@ -200,7 +202,7 @@ class Document extends Swoole\Controller
         $user = $_SESSION['user'];
 
         if (empty($user)) {
-            return ['code' => 4, 'data' => '', 'msg' => 'who are you!'];
+            return ['code' => 4, 'data' => '', 'msg' => 'who are you?'];
         }
 
         $sql = 'SELECT `content` FROM `section` ';

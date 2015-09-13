@@ -10,6 +10,9 @@ class Directory extends Swoole\Controller
     function __construct($swoole)
     {
         parent::__construct($swoole);
+
+        $this->session->start();
+
         $this->model = model('Directory');
     }
 

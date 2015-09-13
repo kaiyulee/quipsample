@@ -6,7 +6,7 @@ var List = React.createClass({
         return {data: []}
     },
     componentDidMount: function() {
-        Ajax.get('list.json', {}, function(data){
+        Ajax.get('/directory/desktop', {}, function(data){
             this.setState({data: data});
         }.bind(this))
     },

@@ -1,8 +1,8 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
-var port = '7777';
-var server = '127.0.0.1';
+var port = '80';
+var server = 'http://learn-swl.me';
 
 new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,

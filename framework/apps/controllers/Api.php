@@ -10,15 +10,20 @@ class Api extends Swoole\Controller
     function __construct($swoole)
     {
         parent::__construct($swoole);
-        //Swoole::$php->session->start();
-        //Swoole\Auth::login_require();
+
+        $this->session->start();
     }
 
     public function user()
     {
-        $auth       = empty($_REQUEST['auth']) ? '' : $_REQUEST['auth'];
+        $auth = empty($_REQUEST['auth']) ? '' : $_REQUEST['auth'];
 
         if (!empty($auth)) return App\User::auth($auth);
+    }
+
+    public function getUserInfo()
+    {
+        return $_SESSION['user'];
     }
 }
 

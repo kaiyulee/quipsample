@@ -4,5 +4,6 @@
     {id: 1, dirid: 3, name: 'c'},
     {id: 1, dirid: 4, name: 'd'},
     {id: 1, dirid: 5, name: 'e'},
-    {id: 1, dirid: 6, name: 'f'}
+    {id: 1, dirid: 6, name: 'f'},
+    {id: 1, dirid: 7, name: 'g'}
 ]
