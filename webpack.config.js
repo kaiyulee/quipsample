@@ -7,8 +7,8 @@ module.exports = {
             './src/entry.js'
         ],
         dom: [
-            'webpack-dev-server/client?http://127.0.0.1:7777',
-            'webpack/hot/only-dev-server',
+     //       'webpack-dev-server/client?http://127.0.0.1:7777',
+     //       'webpack/hot/only-dev-server',
             './src/dom.js'
         ]
     },

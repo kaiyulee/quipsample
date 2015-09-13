@@ -18,9 +18,11 @@ var Login = React.createClass({
                 console.log(body);
 
                 if (body.code == 0) {
+                    var user = body.data;
                     Cookies.set('login', 'login');
-                    Cookies.set('uid', body.data.uid);
-                    Cookies.set('user', body.data);
+                    Cookies.set('uid', user.id);
+                    Cookies.set('username', user.name);
+                    Cookies.set('avatar', user.avatar);
                     callback();
                 } else {
                     alert('账号或密码错误');
